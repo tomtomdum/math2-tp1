@@ -17,6 +17,14 @@ public class Route {
         for(Noeud element : listeNoeuds) element.printer();
     }
 
+    public void runGraph(String serieBinaire){
+        for(int i = 0; i<serieBinaire.length(); i++){
+            char ch = serieBinaire.charAt(i);
+
+        }
+
+    }
+
 //    public void ProchainNoeud(){
 //        for( Noeud noeud :listeNoeuds)
 //            if(noeud.getListeDesArcs().get)
@@ -71,20 +79,20 @@ public class Route {
                     noeudSource.addArc(noeudSource, noeudDestination, Integer.parseInt(valeurDuChemin));
                 }
                 else if( isNoeudSourceExistant && !isNoeudDestinationExistant){
-                    noeudDestination = new Noeud(lettrePointee);
+                    noeudDestination = new Noeud(lettrePointee, false);
                     noeudSource.addArc(noeudSource, noeudDestination, Integer.parseInt(valeurDuChemin));
                     listeNoeuds.add(noeudDestination);
                 }
 
                 else if( isNoeudSourceExistant && !isNoeudDestinationExistant ){
-                    noeudSource = new Noeud(lettreDuDepart);
+                    noeudSource = new Noeud(lettreDuDepart, false);
                     noeudSource.addArc(noeudSource, noeudDestination, Integer.parseInt(valeurDuChemin));
                     listeNoeuds.add(noeudSource);
                 }
 
                 else{
-                    noeudSource = new Noeud(lettreDuDepart);
-                    noeudDestination = new Noeud(lettrePointee);
+                    noeudSource = new Noeud(lettreDuDepart, false);
+                    noeudDestination = new Noeud(lettrePointee, false);
 
                     // il est possible qu'un noeud ne pointe vers rien, mais sois pointé, donc on crée seulement un arc de source à destinataire
                     noeudSource.addArc(noeudSource, noeudDestination, Integer.parseInt(valeurDuChemin));

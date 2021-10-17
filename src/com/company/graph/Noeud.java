@@ -5,10 +5,12 @@ import java.util.LinkedList;
 
 public class Noeud {
     private String nom;
+    private boolean isFinal = false;
     private ArrayList<Arc> listeDesArcs = new ArrayList<Arc>();
 
-    public Noeud(String nom) {
+    public Noeud(String nom, boolean isFinal) {
         this.nom = nom;
+        this.isFinal = isFinal;
     }
 
     public void printer(){
