@@ -10,10 +10,14 @@ public class Noeud {
     public Noeud(String nom) {
         this.nom = nom;
     }
+
+    public void printer(){
+        for(Arc element : listeDesArcs) System.out.println(element.getSource().getNom()+ " -> " + element.getDestination().getNom() + " valeur: " + element.getValeurArc());
+    }
+
     public String getNom() {
         return nom;
     }
-
 
     public ArrayList<Arc> getListeDesArcs() {
         return listeDesArcs;

@@ -13,6 +13,10 @@ public class Route {
 
     ArrayList<Noeud> listeNoeuds = new ArrayList<Noeud>();
 
+    public void printer(){
+        for(Noeud element : listeNoeuds) element.printer();
+    }
+
 //    public void ProchainNoeud(){
 //        for( Noeud noeud :listeNoeuds)
 //            if(noeud.getListeDesArcs().get)
@@ -72,7 +76,7 @@ public class Route {
                     listeNoeuds.add(noeudDestination);
                 }
 
-                else if( !isNoeudSourceExistant && !isNoeudDestinationExistant ){
+                else if( isNoeudSourceExistant && !isNoeudDestinationExistant ){
                     noeudSource = new Noeud(lettreDuDepart);
                     noeudSource.addArc(noeudSource, noeudDestination, Integer.parseInt(valeurDuChemin));
                     listeNoeuds.add(noeudSource);
