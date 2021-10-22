@@ -14,7 +14,7 @@ public class Noeud {
     }
 
     public void printer(){
-        for(Arc element : listeDesArcs) System.out.println(element.getSource().getNom()+ " -> " + element.getDestination().getNom() + " valeur: " + element.getValeurArc());
+        for(Arc element : listeDesArcs) System.out.println(element.getSource().getNom()+ " -> " + element.getDestination().getNom() + " valeur: " + element.getValeurArc() + " la dest est finale ?:" + element.getDestination().isFinal() );
     }
 
     public String getNom() {

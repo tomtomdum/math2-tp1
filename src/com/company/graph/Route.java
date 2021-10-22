@@ -41,7 +41,8 @@ public class Route {
                     arcPrecedant = arc;
                 }
 
-//                if(noeudCourant.getListeDesArcs().isEmpty() && serieBinaire.charAt(i)) {// le noeud se rend nul part
+                // revenir en arriere
+//                if(noeudCourant.) {// le noeud se rend nul part
 //                    noeudCourant = noeudPrecedant;
 //                    // le noeud se rend nul part et n'est pas final, on enleve le chemin accessible
 //                    if(!arc.getSource().equals(arc.getDestination())) {
@@ -55,7 +56,6 @@ public class Route {
     }
 
 // TODO: traiter le charactere e
-    // determiner si le noeud est final
     public void fileParser(){
         try {
             File myObj = new File("C:\\Users\\toys7\\Desktop\\math2-tp1\\src\\com\\company\\grammar.txt");
@@ -71,6 +71,7 @@ public class Route {
                 Boolean isNoeudDestinationExistant = false;
                 Noeud noeudSource = null;
                 Noeud noeudDestination = null;
+                Noeud noeudFinal = new Noeud("final", true); // noeud générique à insérer dans un arc à chaque fois que la grammaire produit un état final ex: S->0
 
                 if (!data.equals("e")) {
                     String[] parts = data.split("->");
@@ -79,7 +80,7 @@ public class Route {
                     valeurDuChemin = goingto.replaceAll("[^0-9]+", "");
                     goingto = parts[1];
                     lettrePointee = goingto.replaceAll("\\d", "");
-                } else {
+                } else {// gérer l'élément vide ici
 //                    for(Noeud noeud: listeNoeuds){
 //                        if (noeud.getNom().equals("S")) {
 //                            isNoeudSourceExistant = true;
@@ -88,7 +89,7 @@ public class Route {
 //                        }
 
                 }
-                // gérer l'élément vide ici
+
 
                 // recherche en premier si le noeud existe dans la liste
                 for (Noeud noeud : listeNoeuds) {
@@ -101,7 +102,7 @@ public class Route {
 
                 // recherche si le noeud de destination existe dans la liste
                 for (Noeud noeud : listeNoeuds) {
-                    if (noeud.getNom().equals(lettreDuDepart)) {
+                    if (noeud.getNom().equals(lettrePointee)) {
                         isNoeudDestinationExistant = true;
                         noeudDestination = noeud;
                         break;
@@ -111,9 +112,16 @@ public class Route {
                 if (isNoeudSourceExistant && isNoeudDestinationExistant) {
                     noeudSource.addArc(noeudSource, noeudDestination, Integer.parseInt(valeurDuChemin));
                 } else if (isNoeudSourceExistant && !isNoeudDestinationExistant) {
-                    noeudDestination = new Noeud(lettrePointee, false);
-                    noeudSource.addArc(noeudSource, noeudDestination, Integer.parseInt(valeurDuChemin));
-                    listeNoeuds.add(noeudDestination);
+
+                    if(lettrePointee.equals("")){
+                        noeudSource.addArc(noeudSource, noeudFinal, Integer.parseInt(valeurDuChemin));
+                    }
+                    else{
+                        noeudDestination = new Noeud(lettrePointee, false);
+                        noeudSource.addArc(noeudSource, noeudDestination, Integer.parseInt(valeurDuChemin));
+                        listeNoeuds.add(noeudDestination);
+                    }
+
                 } else if (!isNoeudSourceExistant && isNoeudDestinationExistant) {
                     noeudSource = new Noeud(lettreDuDepart, false);
                     noeudSource.addArc(noeudSource, noeudDestination, Integer.parseInt(valeurDuChemin));

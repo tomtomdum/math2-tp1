@@ -11,6 +11,10 @@ public class Arc {
         this.valeurArc = valeurArc;
     }
 
+//    public void printer(Arc arc){
+//        System.out.println("source: " + arc.source + " dest: " + arc.destination + " valeur arc: " + arc.valeurArc + " dest finale : " + arc.destination.isFinal());
+//    }
+
     public Noeud getSource() {
         return source;
     }
