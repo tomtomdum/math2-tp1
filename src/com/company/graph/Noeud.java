@@ -5,7 +5,7 @@ import java.util.LinkedList;
 
 public class Noeud {
     private String nom;
-    private boolean isFinal = false;
+    private boolean isFinal;
     private ArrayList<Arc> listeDesArcs = new ArrayList<Arc>();
 
     public Noeud(String nom, boolean isFinal) {
@@ -29,5 +29,13 @@ public class Noeud {
     public void addArc(Noeud source, Noeud destination, int valeurArc){
         Arc arc = new Arc(source, destination, valeurArc);
         listeDesArcs.add(arc);
+    }
+
+    public boolean isFinal() {
+        return isFinal;
+    }
+
+    public void setFinal(boolean isFinal) {
+        this.isFinal = isFinal;
     }
 }

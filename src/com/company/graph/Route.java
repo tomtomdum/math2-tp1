@@ -12,25 +12,50 @@ public class Route {
     private Noeud noeudSuivant;
 
     ArrayList<Noeud> listeNoeuds = new ArrayList<Noeud>();
+    ArrayList<Arc> listeArcsCompatible = new ArrayList<Arc>();
 
     public void printer(){
         for(Noeud element : listeNoeuds) element.printer();
     }
 
-    public void runGraph(String serieBinaire){
-        for(int i = 0; i<serieBinaire.length(); i++){
-            char ch = serieBinaire.charAt(i);
 
+    public void runGraph(String serieBinaire){
+        Arc arcPrecedant;
+        // recherche du point de départ
+        for(Noeud noeud: listeNoeuds){
+            if (noeud.getNom().equals("S")) {
+                noeudCourant = noeud;
+                break;
+            }
         }
 
+        for(int i = 0; i<serieBinaire.length(); i++){
+            char ch = serieBinaire.charAt(i);
+            int j =0; // utiliser pour éliminer les chemin deja essayé
+
+            for(Arc arc: noeudCourant.getListeDesArcs()){
+
+                if(Character.getNumericValue(ch) == arc.getValeurArc()){// si la valeur de l'input est égal à la valeur de l'arc on se déplace
+                    noeudPrecedant = noeudCourant;
+                    noeudCourant = arc.getDestination();
+                    arcPrecedant = arc;
+                }
+
+//                if(noeudCourant.getListeDesArcs().isEmpty() && serieBinaire.charAt(i)) {// le noeud se rend nul part
+//                    noeudCourant = noeudPrecedant;
+//                    // le noeud se rend nul part et n'est pas final, on enleve le chemin accessible
+//                    if(!arc.getSource().equals(arc.getDestination())) {
+//                        listeArcsCompatible.remove(arc);
+//                    }
+//                }
+
+                if(noeudCourant.isFinal()) break;
+            }
+        }
     }
 
-//    public void ProchainNoeud(){
-//        for( Noeud noeud :listeNoeuds)
-//            if(noeud.getListeDesArcs().get)
-//        listeNoeuds.get();
-//    }
-
+// TODO: traiter le charactere e
+    // determiner si le noeud est final
     public void fileParser(){
         try {
             File myObj = new File("C:\\Users\\toys7\\Desktop\\math2-tp1\\src\\com\\company\\grammar.txt");
@@ -47,18 +72,26 @@ public class Route {
                 Noeud noeudSource = null;
                 Noeud noeudDestination = null;
 
-                if(!data.equals("e")) {
+                if (!data.equals("e")) {
                     String[] parts = data.split("->");
                     lettreDuDepart = parts[0]; // va aller chercher premiere partie de l'expression
                     goingto = parts[1];
                     valeurDuChemin = goingto.replaceAll("[^0-9]+", "");
                     goingto = parts[1];
-                    lettrePointee = goingto.replaceAll("\\d","");
+                    lettrePointee = goingto.replaceAll("\\d", "");
+                } else {
+//                    for(Noeud noeud: listeNoeuds){
+//                        if (noeud.getNom().equals("S")) {
+//                            isNoeudSourceExistant = true;
+//                            noeudSource = noeud;
+//                            break;
+//                        }
+
                 }
-                else{} // gérer l'élément vide ici
+                // gérer l'élément vide ici
 
                 // recherche en premier si le noeud existe dans la liste
-                for(Noeud noeud: listeNoeuds){
+                for (Noeud noeud : listeNoeuds) {
                     if (noeud.getNom().equals(lettreDuDepart)) {
                         isNoeudSourceExistant = true;
                         noeudSource = noeud;
@@ -67,7 +100,7 @@ public class Route {
                 }
 
                 // recherche si le noeud de destination existe dans la liste
-                for(Noeud noeud: listeNoeuds){
+                for (Noeud noeud : listeNoeuds) {
                     if (noeud.getNom().equals(lettreDuDepart)) {
                         isNoeudDestinationExistant = true;
                         noeudDestination = noeud;
@@ -75,22 +108,17 @@ public class Route {
                     }
                 }
 
-                if(isNoeudSourceExistant && isNoeudDestinationExistant){
+                if (isNoeudSourceExistant && isNoeudDestinationExistant) {
                     noeudSource.addArc(noeudSource, noeudDestination, Integer.parseInt(valeurDuChemin));
-                }
-                else if( isNoeudSourceExistant && !isNoeudDestinationExistant){
+                } else if (isNoeudSourceExistant && !isNoeudDestinationExistant) {
                     noeudDestination = new Noeud(lettrePointee, false);
                     noeudSource.addArc(noeudSource, noeudDestination, Integer.parseInt(valeurDuChemin));
                     listeNoeuds.add(noeudDestination);
-                }
-
-                else if( isNoeudSourceExistant && !isNoeudDestinationExistant ){
+                } else if (!isNoeudSourceExistant && isNoeudDestinationExistant) {
                     noeudSource = new Noeud(lettreDuDepart, false);
                     noeudSource.addArc(noeudSource, noeudDestination, Integer.parseInt(valeurDuChemin));
                     listeNoeuds.add(noeudSource);
-                }
-
-                else{
+                } else {
                     noeudSource = new Noeud(lettreDuDepart, false);
                     noeudDestination = new Noeud(lettrePointee, false);
 
@@ -103,7 +131,6 @@ public class Route {
             }
             myReader.close();
         } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
             e.printStackTrace();
         }
     }
