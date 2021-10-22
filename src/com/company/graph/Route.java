@@ -18,7 +18,14 @@ public class Route {
         for(Noeud element : listeNoeuds) element.printer();
     }
 
-
+/*
+RESTE À FAIRE PEUT EN MANQUER
+* boucle
+* état final fait
+* chemin normal fait
+* chemin impossible
+*
+* */
     public void runGraph(String serieBinaire){
         Arc arcPrecedant;
         // recherche du point de départ
@@ -50,7 +57,12 @@ public class Route {
 //                    }
 //                }
 
-                if(noeudCourant.isFinal()) break;
+
+            }
+
+            if(noeudCourant.isFinal() && i == (serieBinaire.length() - 1)){
+                System.out.println("Fin");
+                break;
             }
         }
     }
@@ -73,23 +85,13 @@ public class Route {
                 Noeud noeudDestination = null;
                 Noeud noeudFinal = new Noeud("final", true); // noeud générique à insérer dans un arc à chaque fois que la grammaire produit un état final ex: S->0
 
-                if (!data.equals("e")) {
+
                     String[] parts = data.split("->");
                     lettreDuDepart = parts[0]; // va aller chercher premiere partie de l'expression
                     goingto = parts[1];
                     valeurDuChemin = goingto.replaceAll("[^0-9]+", "");
                     goingto = parts[1];
                     lettrePointee = goingto.replaceAll("\\d", "");
-                } else {// gérer l'élément vide ici
-//                    for(Noeud noeud: listeNoeuds){
-//                        if (noeud.getNom().equals("S")) {
-//                            isNoeudSourceExistant = true;
-//                            noeudSource = noeud;
-//                            break;
-//                        }
-
-                }
-
 
                 // recherche en premier si le noeud existe dans la liste
                 for (Noeud noeud : listeNoeuds) {
@@ -113,7 +115,10 @@ public class Route {
                     noeudSource.addArc(noeudSource, noeudDestination, Integer.parseInt(valeurDuChemin));
                 } else if (isNoeudSourceExistant && !isNoeudDestinationExistant) {
 
-                    if(lettrePointee.equals("")){
+                    if(lettrePointee.equals("e") && noeudSource.getNom().equals("S")){
+                        noeudSource.setFinal(true);
+                    }
+                    else if(lettrePointee.equals("")){
                         noeudSource.addArc(noeudSource, noeudFinal, Integer.parseInt(valeurDuChemin));
                     }
                     else{
