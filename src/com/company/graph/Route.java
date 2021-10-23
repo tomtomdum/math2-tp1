@@ -51,6 +51,7 @@ RESTE À FAIRE PEUT EN MANQUER
                 if(arc.getSource().equals(arc.getDestination()) && Character.getNumericValue(ch) == arc.getValeurArc()) {
                     aLoop = arc;
                     thereIsALoop = true;
+                    System.out.println(arc.getSource().getNom() + "->" + arc.getValeurArc() + arc.getDestination().getNom());
                 }
             }
 
@@ -71,6 +72,7 @@ RESTE À FAIRE PEUT EN MANQUER
                     route.add(arc);
                     positionRoute++;
                     noeudCourant = arc.getDestination();
+                    System.out.println(arc.getSource().getNom() + "->" + arc.getValeurArc() + arc.getDestination().getNom());
                     break;
                 }
                 //revenir en arriere
@@ -88,18 +90,18 @@ RESTE À FAIRE PEUT EN MANQUER
 
             if(noeudCourant.isFinal() && positionLangage == (serieBinaire.length() - 1)){
                 System.out.println("Fin");
+                for(Arc arc: route){
+                    System.out.println(arc.getSource().getNom() + "->" + arc.getValeurArc() + arc.getDestination().getNom());
+                }
                 break;
             } else if(positionLangage == serieBinaire.length() -1 && !noeudCourant.isFinal()){
                 positionRoute--;
                 noeudCourant = route.get(positionRoute).getSource();// on retourne vers la source de l'arc, car on est déja à sa destination
                 route.remove(positionRoute);
-                // le noeud se rend nul part et n'est pas final, on enleve le chemin accessible
-                for(Noeud noeud: listeNoeuds){
-                    if(noeud.getNom().equals(noeudCourant.getNom())) noeud.removeArc(positionArray);
-                    positionLangage--;
-                    break;
-                }
+//                // le noeud se rend nul part et n'est pas final, on enleve le chemin accessible
+                noeudCourant.removeArc(positionArray);
                 positionLangage--;
+                System.out.println("going back");
             }
         }
     }
