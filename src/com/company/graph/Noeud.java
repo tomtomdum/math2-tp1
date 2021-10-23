@@ -1,12 +1,11 @@
 package com.company.graph;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 public class Noeud {
     private String nom;
     private boolean isFinal;
-    private ArrayList<Arc> listeDesArcs = new ArrayList<Arc>();
+    public ArrayList<Arc> listeDesArcs = new ArrayList<Arc>();
 
     public Noeud(String nom, boolean isFinal) {
         this.nom = nom;
@@ -29,6 +28,10 @@ public class Noeud {
     public void addArc(Noeud source, Noeud destination, int valeurArc){
         Arc arc = new Arc(source, destination, valeurArc);
         listeDesArcs.add(arc);
+    }
+
+    public void removeArc(int position){
+        listeDesArcs.remove(position);
     }
 
     public boolean isFinal() {
