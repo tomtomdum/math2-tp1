@@ -12,7 +12,7 @@ public class Main {
     public static void main(String[] args) {
         Route route = new Route();
         route.fileParser();
-        route.runGraph("11");
+        route.runGraph("111");
         route.printer();
     }
 }

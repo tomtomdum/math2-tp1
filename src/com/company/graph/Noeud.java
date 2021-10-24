@@ -34,6 +34,10 @@ public class Noeud {
         listeDesArcs.remove(position);
     }
 
+    public void removeArcObject(Arc arc){
+        listeDesArcs.remove(arc);
+    }
+
     public boolean isFinal() {
         return isFinal;
     }

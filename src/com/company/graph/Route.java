@@ -47,6 +47,7 @@ RESTE À FAIRE PEUT EN MANQUER
 
             int positionArray = 0; // utiliser pour éliminer les chemin deja essayé
 
+            // on détece si le noeud courant contient une boucle, car il faut la faire en premier
             for(Arc arc: noeudCourant.getListeDesArcs()){
                 if(arc.getSource().equals(arc.getDestination()) && Character.getNumericValue(ch) == arc.getValeurArc()) {
                     aLoop = arc;
@@ -75,17 +76,20 @@ RESTE À FAIRE PEUT EN MANQUER
                     System.out.println(arc.getSource().getNom() + "->" + arc.getValeurArc() + arc.getDestination().getNom());
                     break;
                 }
+                // peut etre inutile cette partie finalament??
                 //revenir en arriere
-                if(positionArray == (noeudCourant.getListeDesArcs().size() -1)) {// le langage se rend nul part, on a atteint la fin de la liste d'arc
-                    noeudCourant = route.get(positionRoute).getSource();// on retourne vers la source de l'arc, car on est déja à sa destination
-                    // le noeud se rend nul part et n'est pas final, on enleve le chemin accessible
-                    for(Noeud noeud: listeNoeuds){
-                        if(noeud.getNom().equals(arc.getSource().getNom())) noeud.getListeDesArcs().remove(route.get(positionRoute)); positionRoute--;
-                        break;
-                    }
-                    positionLangage--;
-                }
+//                if(positionArray == (noeudCourant.getListeDesArcs().size() -1)) {// le langage se rend nul part, on a atteint la fin de la liste d'arc
+//                    noeudCourant = route.get(positionRoute).getSource();// on retourne vers la source de l'arc, car on est déja à sa destination
+//                    // le noeud se rend nul part et n'est pas final, on enleve le chemin accessible
+//                    for(Noeud noeud: listeNoeuds){
+//                        if(noeud.getNom().equals(arc.getSource().getNom())) noeud.getListeDesArcs().remove(route.get(positionRoute)); positionRoute--;
+//                        break;
+//                    }
+//                    positionLangage--;
+//                }
+
                 positionArray++;
+
             }
 
             if(noeudCourant.isFinal() && positionLangage == (serieBinaire.length() - 1)){
@@ -94,13 +98,14 @@ RESTE À FAIRE PEUT EN MANQUER
                     System.out.println(arc.getSource().getNom() + "->" + arc.getValeurArc() + arc.getDestination().getNom());
                 }
                 break;
-            } else if(positionLangage == serieBinaire.length() -1 && !noeudCourant.isFinal()){
+            } else if((positionLangage == serieBinaire.length() -1) && !noeudCourant.isFinal()){
                 positionRoute--;
                 noeudCourant = route.get(positionRoute).getSource();// on retourne vers la source de l'arc, car on est déja à sa destination
+                noeudCourant.removeArcObject(route.get(positionRoute));
                 route.remove(positionRoute);
 //                // le noeud se rend nul part et n'est pas final, on enleve le chemin accessible
-                noeudCourant.removeArc(positionArray);
-                positionLangage--;
+//                noeudCourant.removeArc(positionArray);
+                positionLangage -= 2; // on sosutrait deux car la boucle for ajoute un automatiquement
                 System.out.println("going back");
             }
         }
