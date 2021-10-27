@@ -77,7 +77,7 @@ public class Route {
             if(noeudCourant.isFinal() && ch=='F'){
                 System.out.println("Fin");
                 break;
-            } else if((positionLangage == serieBinaire.length() -1) && !noeudCourant.isFinal()){
+            } else if(!possibilites(ch) && !noeudCourant.isFinal()){
                 positionRoute--;
                 noeudCourant = route.get(positionRoute).getSource();// on retourne vers la source de l'arc, car on est déja à sa destination
                 route.get(positionRoute).setCheminDejaEmprunter(true);
