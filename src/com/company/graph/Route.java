@@ -17,7 +17,11 @@ public class Route {
     public void printer(){
         for(Noeud element : listeNoeuds) element.printer();
     }
-
+/*
+*
+*
+*
+* */
 
     public void runGraph(String serieBinaire) throws Exception {
         serieBinaire +="F";
@@ -34,8 +38,8 @@ public class Route {
                 break;
             }
         }
-
-        for(int positionLangage = 0; positionLangage<serieBinaire.length(); positionLangage++){
+int positionLangage =0;
+        while(true){
             char ch = serieBinaire.charAt(positionLangage);
 //            noeudCourant = route.get(positionRoute).getDestination();
 //            noeudCourant.printer();
@@ -62,12 +66,12 @@ public class Route {
             }
 
             for(Arc arc: noeudCourant.getListeDesArcs()){
-//!(positionLangage < serieBinaire.length() && arc.getDestination().isFinal() )
                 if(Character.getNumericValue(ch) == arc.getValeurArc() && !arc.isCheminDejaEmprunter()){
-                    // si la valeur de l'input est égal à la valeur de l'arc on se déplace
-                    // on vérifie aussi que le dernier noeud qu'on se déplace est final sinon il ne sera pas possible de revenir en arriere en utilisant le prochain if
+                    // si la valeur de l'input est égal à la valeur de l'arc on se déplace, on vérifie aussi qu'on a pas déja emprunté ce chemin
                     route.add(arc);
                     positionRoute++;
+                    positionLangage++;
+                    ch = serieBinaire.charAt(positionLangage);// pas vraiment besoin d'assigner le noeud courant, cela revient au meme, on se déplace dans le langage donné
                     noeudCourant = arc.getDestination();
                     System.out.println(arc.getSource().getNom() + "->" + arc.getValeurArc() + arc.getDestination().getNom());
                     break;
@@ -77,15 +81,12 @@ public class Route {
             if(noeudCourant.isFinal() && ch=='F'){
                 System.out.println("Fin");
                 break;
-            } else if(!possibilites(ch) && !noeudCourant.isFinal()){
+            } else if(!possibilites(ch) && !noeudCourant.equals(noeudS)){
                 positionRoute--;
                 noeudCourant = route.get(positionRoute).getSource();// on retourne vers la source de l'arc, car on est déja à sa destination
-                route.get(positionRoute).setCheminDejaEmprunter(true);
-//                noeudCourant.removeArcObject(route.get(positionRoute));
+                route.get(positionRoute).setCheminDejaEmprunter(true);//ont marque que le chemin à déja été emprunté et l'algo ne pourras plus emprunter ce chemin
                 route.remove(positionRoute);
-//                // le noeud se rend nul part et n'est pas final, on enleve le chemin accessible
-//                noeudCourant.removeArc(positionArray);
-                positionLangage -= 2; // on sosutrait deux car la boucle for ajoute un automatiquement
+                positionLangage -= 1; // on sosutrait deux car la boucle for ajoute un automatiquement
                 System.out.println("going back");
             } else if( noeudCourant == noeudS && !possibilites(ch)){// on revient au point de départ et aucune possibilité n'est possible, donc le langage n'est pas accepté
                 throw new Exception("Le langage n'est pas possible");
