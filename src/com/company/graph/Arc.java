@@ -4,6 +4,9 @@ public class Arc {
     private Noeud source;
     private Noeud destination;
     private int valeurArc;
+    private boolean cheminDejaEmprunter;
+
+
 
     public Arc(Noeud source, Noeud destination, int valeurArc) {
         this.source = source;
@@ -33,5 +36,13 @@ public class Arc {
 
     public void setValeurArc(int valeurArc) {
         this.valeurArc = valeurArc;
+    }
+
+    public boolean isCheminDejaEmprunter() {
+        return cheminDejaEmprunter;
+    }
+
+    public void setCheminDejaEmprunter(boolean cheminDejaEmprunter) {
+        this.cheminDejaEmprunter = cheminDejaEmprunter;
     }
 }

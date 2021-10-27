@@ -18,15 +18,9 @@ public class Route {
         for(Noeud element : listeNoeuds) element.printer();
     }
 
-    /*
-    RESTE À FAIRE PEUT EN MANQUER
-    * boucle
-    * état final fait
-    * chemin normal fait
-    * chemin impossible
-    *
-    * */
+
     public void runGraph(String serieBinaire) throws Exception {
+        serieBinaire +="F";
         Arc arcPrecedant = null;
         Arc aLoop = null;
         Noeud noeudS =null;
@@ -57,8 +51,9 @@ public class Route {
             }
 
             if(thereIsALoop){
-                while(Character.getNumericValue(ch) == aLoop.getValeurArc() && positionLangage < serieBinaire.length() -1){
-                    positionLangage++; // pas vraiment besoin d'assigner le noeud courant, cela revient au meme, on se déplace dans le langage donné
+                while(Character.getNumericValue(ch) == aLoop.getValeurArc() && !aLoop.isCheminDejaEmprunter()){
+                    positionLangage++;
+                    ch = serieBinaire.charAt(positionLangage);// pas vraiment besoin d'assigner le noeud courant, cela revient au meme, on se déplace dans le langage donné
                     route.add(aLoop);
                     positionRoute++;// on ajoute seulement une loop dans le chemin utilisé
                     System.out.println(aLoop.getSource().getNom() + "->" + aLoop.getValeurArc() + aLoop.getDestination().getNom());
@@ -68,7 +63,7 @@ public class Route {
 
             for(Arc arc: noeudCourant.getListeDesArcs()){
 //!(positionLangage < serieBinaire.length() && arc.getDestination().isFinal() )
-                if(Character.getNumericValue(ch) == arc.getValeurArc()){
+                if(Character.getNumericValue(ch) == arc.getValeurArc() && !arc.isCheminDejaEmprunter()){
                     // si la valeur de l'input est égal à la valeur de l'arc on se déplace
                     // on vérifie aussi que le dernier noeud qu'on se déplace est final sinon il ne sera pas possible de revenir en arriere en utilisant le prochain if
                     route.add(arc);
@@ -77,16 +72,16 @@ public class Route {
                     System.out.println(arc.getSource().getNom() + "->" + arc.getValeurArc() + arc.getDestination().getNom());
                     break;
                 }
-                positionArray++;
             }
 
-            if(noeudCourant.isFinal() && positionLangage == (serieBinaire.length() - 1)){
+            if(noeudCourant.isFinal() && ch=='F'){
                 System.out.println("Fin");
                 break;
             } else if((positionLangage == serieBinaire.length() -1) && !noeudCourant.isFinal()){
                 positionRoute--;
                 noeudCourant = route.get(positionRoute).getSource();// on retourne vers la source de l'arc, car on est déja à sa destination
-                noeudCourant.removeArcObject(route.get(positionRoute));
+                route.get(positionRoute).setCheminDejaEmprunter(true);
+//                noeudCourant.removeArcObject(route.get(positionRoute));
                 route.remove(positionRoute);
 //                // le noeud se rend nul part et n'est pas final, on enleve le chemin accessible
 //                noeudCourant.removeArc(positionArray);
@@ -100,7 +95,7 @@ public class Route {
 
     public boolean possibilites(char ch){
         for(Arc arc : noeudCourant.getListeDesArcs()){
-            if(Character.getNumericValue(ch) == arc.getValeurArc()){
+            if(Character.getNumericValue(ch) == arc.getValeurArc() && !arc.isCheminDejaEmprunter()){
                 return true;
             }
         }
