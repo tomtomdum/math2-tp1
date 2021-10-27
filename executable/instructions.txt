@@ -1,0 +1,3 @@
+ouvrir CMD
+entrer java -jar math2-tp1.jar
+sdk utilisé: amazon correto 1.8.0_312
