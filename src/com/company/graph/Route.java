@@ -7,7 +7,9 @@ import java.util.Scanner;
 
 public class Route {
 
+    private Noeud noeudPrecedant;
     private Noeud noeudCourant;
+    private Noeud noeudSuivant;
 
     ArrayList<Noeud> listeNoeuds = new ArrayList<Noeud>();
     ArrayList<Arc> route = new ArrayList<Arc>();
@@ -17,9 +19,15 @@ public class Route {
     }
 
     /*
-     * chemin impossible
-     * */
+    RESTE À FAIRE PEUT EN MANQUER
+    * boucle
+    * état final fait
+    * chemin normal fait
+    * chemin impossible
+    *
+    * */
     public void runGraph(String serieBinaire) throws Exception {
+        Arc arcPrecedant = null;
         Arc aLoop = null;
         Noeud noeudS =null;
         boolean thereIsALoop = false;
@@ -35,6 +43,10 @@ public class Route {
 
         for(int positionLangage = 0; positionLangage<serieBinaire.length(); positionLangage++){
             char ch = serieBinaire.charAt(positionLangage);
+//            noeudCourant = route.get(positionRoute).getDestination();
+//            noeudCourant.printer();
+
+            int positionArray = 0; // utiliser pour éliminer les chemin deja essayé
 
             // on détece si le noeud courant contient une boucle, car il faut la faire en premier
             for(Arc arc: noeudCourant.getListeDesArcs()){
@@ -65,16 +77,13 @@ public class Route {
                     System.out.println(arc.getSource().getNom() + "->" + arc.getValeurArc() + arc.getDestination().getNom());
                     break;
                 }
+                positionArray++;
             }
 
-
             if(noeudCourant.isFinal() && positionLangage == (serieBinaire.length() - 1)){
-                System.out.println("fIN");
-                for(Arc arc: route){
-                    System.out.println(arc.getSource().getNom() + "->" + arc.getValeurArc() + arc.getDestination().getNom());
-                }
+                System.out.println("Fin");
                 break;
-            } else if((positionLangage == serieBinaire.length() -1) && !noeudCourant.isFinal() || !possibilites(ch)){
+            } else if((positionLangage == serieBinaire.length() -1) && !noeudCourant.isFinal()){
                 positionRoute--;
                 noeudCourant = route.get(positionRoute).getSource();// on retourne vers la source de l'arc, car on est déja à sa destination
                 noeudCourant.removeArcObject(route.get(positionRoute));
@@ -86,17 +95,17 @@ public class Route {
             } else if( noeudCourant == noeudS && !possibilites(ch)){// on revient au point de départ et aucune possibilité n'est possible, donc le langage n'est pas accepté
                 throw new Exception("Le langage n'est pas possible");
             }
-
         }
     }
-public boolean possibilites(char ch){
+
+    public boolean possibilites(char ch){
         for(Arc arc : noeudCourant.getListeDesArcs()){
             if(Character.getNumericValue(ch) == arc.getValeurArc()){
                 return true;
             }
         }
-    return false;
-}
+        return false;
+    }
 
     public void fileParser(){
         try {
