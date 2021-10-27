@@ -7,25 +7,16 @@ import java.util.Scanner;
 
 public class Route {
 
-    private Noeud noeudPrecedant;
     private Noeud noeudCourant;
-    private Noeud noeudSuivant;
-
     ArrayList<Noeud> listeNoeuds = new ArrayList<Noeud>();
-    ArrayList<Arc> route = new ArrayList<Arc>();
+    ArrayList<Arc> route = new ArrayList<Arc>();// utiliser pour enregistrer le parcours dans le graph et pour revenir sur nos pas
 
     public void printer(){
         for(Noeud element : listeNoeuds) element.printer();
     }
-/*
-*
-*
-*
-* */
 
     public void runGraph(String serieBinaire) throws Exception {
         serieBinaire +="F";
-        Arc arcPrecedant = null;
         Arc aLoop = null;
         Noeud noeudS =null;
         boolean thereIsALoop = false;
@@ -38,14 +29,9 @@ public class Route {
                 break;
             }
         }
-int positionLangage =0;
+        int positionLangage =0;
         while(true){
             char ch = serieBinaire.charAt(positionLangage);
-//            noeudCourant = route.get(positionRoute).getDestination();
-//            noeudCourant.printer();
-
-            int positionArray = 0; // utiliser pour éliminer les chemin deja essayé
-
             // on détece si le noeud courant contient une boucle, car il faut la faire en premier
             for(Arc arc: noeudCourant.getListeDesArcs()){
                 if(arc.getSource().equals(arc.getDestination()) && Character.getNumericValue(ch) == arc.getValeurArc()) {
@@ -57,9 +43,9 @@ int positionLangage =0;
             if(thereIsALoop){
                 while(Character.getNumericValue(ch) == aLoop.getValeurArc() && !aLoop.isCheminDejaEmprunter()){
                     positionLangage++;
-                    ch = serieBinaire.charAt(positionLangage);// pas vraiment besoin d'assigner le noeud courant, cela revient au meme, on se déplace dans le langage donné
+                    ch = serieBinaire.charAt(positionLangage);
                     route.add(aLoop);
-                    positionRoute++;// on ajoute seulement une loop dans le chemin utilisé
+                    positionRoute++;
                     System.out.println(aLoop.getSource().getNom() + "->" + aLoop.getValeurArc() + aLoop.getDestination().getNom());
                 }
                 thereIsALoop = false;
@@ -71,7 +57,7 @@ int positionLangage =0;
                     route.add(arc);
                     positionRoute++;
                     positionLangage++;
-                    ch = serieBinaire.charAt(positionLangage);// pas vraiment besoin d'assigner le noeud courant, cela revient au meme, on se déplace dans le langage donné
+                    ch = serieBinaire.charAt(positionLangage);
                     noeudCourant = arc.getDestination();
                     System.out.println(arc.getSource().getNom() + "->" + arc.getValeurArc() + arc.getDestination().getNom());
                     break;
@@ -79,17 +65,17 @@ int positionLangage =0;
             }
 
             if(noeudCourant.isFinal() && ch=='F'){
-                System.out.println("Fin");
+                System.out.println("Fin, le langage fonctionne selon cette grammaire");
                 break;
             } else if(!possibilites(ch) && !noeudCourant.equals(noeudS)){
                 positionRoute--;
                 noeudCourant = route.get(positionRoute).getSource();// on retourne vers la source de l'arc, car on est déja à sa destination
                 route.get(positionRoute).setCheminDejaEmprunter(true);//ont marque que le chemin à déja été emprunté et l'algo ne pourras plus emprunter ce chemin
                 route.remove(positionRoute);
-                positionLangage -= 1; // on sosutrait deux car la boucle for ajoute un automatiquement
+                positionLangage -= 1;
                 System.out.println("going back");
             } else if( noeudCourant == noeudS && !possibilites(ch)){// on revient au point de départ et aucune possibilité n'est possible, donc le langage n'est pas accepté
-                throw new Exception("Le langage n'est pas possible");
+                throw new Exception("Le langage n'est pas possible selon cette grammaire");
             }
         }
     }
