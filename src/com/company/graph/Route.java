@@ -67,7 +67,7 @@ public class Route {
             if(noeudCourant.isFinal() && ch=='F'){
                 System.out.println("Fin, le langage fonctionne selon cette grammaire");
                 break;
-            } else if(!possibilites(ch) && !noeudCourant.equals(noeudS)){
+            } else if(!possibilites(ch) && positionLangage !=0){
                 positionRoute--;
                 noeudCourant = route.get(positionRoute).getSource();// on retourne vers la source de l'arc, car on est déja à sa destination
                 route.get(positionRoute).setCheminDejaEmprunter(true);//ont marque que le chemin à déja été emprunté et l'algo ne pourras plus emprunter ce chemin
